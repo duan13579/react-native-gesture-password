@@ -5,14 +5,15 @@ import {
     Dimensions,
     PanResponder,
     View,
-    Text
+    Text,
+    Image
 } from 'react-native'
 import Line from './line'
 import Circle from './circle'
 
 const Width = Dimensions.get('window').width
 const Height = Dimensions.get('window').height
-const Top = (Height - Width)/2.0 * 1.5
+const Top = (Height - Width)/2.0 * 1.5-150
 const Radius = Width / 10
 
 export default class GesturePassword extends Component {
@@ -71,17 +72,11 @@ export default class GesturePassword extends Component {
 
         return (
             <View style={[styles.frame, this.props.style, {flex: 1}]}>
-                <View style={styles.message}>
-                    <Text style={[styles.msgText, this.props.textStyle, {color: color}]}>
-                        {this.state.message || this.props.message}
-                    </Text>
-                </View>
                 <View style={styles.board} {...this._panResponder.panHandlers}>
                     {this.renderCircles()}
                     {this.renderLines()}
                     <Line ref='line' color={color} />
                 </View>
-
                 {this.props.children}
             </View>
         )
@@ -89,7 +84,7 @@ export default class GesturePassword extends Component {
 
     renderCircles() {
         let array = [], fill, color, inner, outer;
-        let { status, normalColor, wrongColor, rightColor, innerCircle, outerCircle } = this.props;
+        let { status, wrongColor, rightColor, innerCircle, outerCircle } = this.props;
 
         this.state.circles.forEach(function(c, i) {
             fill = c.isActive;
@@ -98,7 +93,7 @@ export default class GesturePassword extends Component {
             outer = !!outerCircle;
 
             array.push(
-                <Circle key={'c_' + i} fill={fill} normalColor={normalColor} color={color} x={c.x} y={c.y} r={Radius} inner={inner} outer={outer} />
+                <Circle key={'c_' + i} fill={fill} color={color} x={c.x} y={c.y} r={Radius} inner={inner} outer={outer} />
             )
         });
 
@@ -270,7 +265,6 @@ export default class GesturePassword extends Component {
 
 GesturePassword.propTypes = {
     message: PropTypes.string,
-    normalColor: PropTypes.string, 
     rightColor: PropTypes.string,
     wrongColor: PropTypes.string,
     status: PropTypes.oneOf(['right', 'wrong', 'normal']),
@@ -285,7 +279,6 @@ GesturePassword.propTypes = {
 
 GesturePassword.defaultProps = {
     message: '',
-    normalColor: '#5FA8FC',
     rightColor: '#5FA8FC',
     wrongColor: '#D93609',
     status: 'normal',
