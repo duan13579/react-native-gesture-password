@@ -61,7 +61,7 @@ Line.defaultProps = {
 const styles = StyleSheet.create({
     line: {
         position: 'absolute',
-        height: 1
+        height: 4
     }
 })
 
